@@ -2,7 +2,7 @@
   "name": "fe-start-app",
   "version": "1.0.0",
   "description": "starter project",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "startDev": "nodemon index.js"

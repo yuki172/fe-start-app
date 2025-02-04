@@ -3,13 +3,34 @@ const { v4: uuidv4 } = require("uuid");
 const { getTaskFromIndex, getTaskIDFromIndex } = require("./data");
 
 const Pool = require("pg").Pool;
-const pool = new Pool({
-  user: process.env.DB_USERNAME,
-  host: process.env.DB_HOST,
-  database: "feeds",
-  password: process.env.DB_PASSWORD,
-  port: 5432,
-});
+
+const ENVIRONMENT = {
+  LOCAL: "local",
+  PRODUCTION: "production",
+};
+
+const dbConfigs = {
+  [ENVIRONMENT.LOCAL]: {
+    user: process.env.DB_USERNAME_PROD,
+    host: process.env.DB_HOST_PROD,
+    database: "feeds",
+    password: process.env.DB_PASSWORD_PROD,
+    port: 5432,
+  },
+  [ENVIRONMENT.PRODUCTION]: {
+    user: process.env.DB_USERNAME,
+    host: process.env.DB_HOST,
+    database: "feeds",
+    password: process.env.DB_PASSWORD,
+    port: 5432,
+  },
+};
+
+const pool = new Pool(
+  process.env.ENVIRONMENT === ENVIRONMENT.PRODUCTION
+    ? dbConfigs[ENVIRONMENT.PRODUCTION]
+    : dbConfigs[ENVIRONMENT.LOCAL]
+);
 
 const createFeed = (req, res) => {
   const feedID = uuidv4();
