@@ -11,18 +11,18 @@ const ENVIRONMENT = {
 
 const dbConfigs = {
   [ENVIRONMENT.LOCAL]: {
-    user: process.env.DB_USERNAME_PROD,
-    host: process.env.DB_HOST_PROD,
-    database: "feeds",
-    password: process.env.DB_PASSWORD_PROD,
-    port: 5432,
+    user: process.env.DB_USERNAME_LOCAL,
+    host: process.env.DB_HOST_LOCAL,
+    database: process.env.DB_DATABASE_LOCAL,
+    password: process.env.DB_PASSWORD_LOCAL,
+    port: process.env.DB_PORT_LOCAL,
   },
   [ENVIRONMENT.PRODUCTION]: {
-    user: process.env.DB_USERNAME,
-    host: process.env.DB_HOST,
-    database: "feeds",
-    password: process.env.DB_PASSWORD,
-    port: 5432,
+    user: process.env.DB_USERNAME_PROD,
+    host: process.env.DB_HOST_PROD,
+    database: process.env.DB_DATABASE_PROD,
+    password: process.env.DB_PASSWORD_PROD,
+    port: process.env.DB_PORT_PROD,
   },
 };
 
@@ -42,6 +42,7 @@ const createFeed = (req, res) => {
     [feedID, candidateName, taskCount, taskCount],
     (error, results) => {
       if (error) {
+        console.log({ error });
         res.status(400).json({ error: "Failed to create feed." });
       } else {
         res.status(201).send(`Feed added with ID: ${feedID}`);
