@@ -4,8 +4,8 @@
   "description": "starter project",
   "main": "server.js",
   "scripts": {
-    "test": "test",
-    "startDev": "nodemon server.js"
+    "start": "node index.js",
+    "startDev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,10 @@
   "homepage": "https://github.com/yuki172/fe-start-app#readme",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "pg": "^8.13.1",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

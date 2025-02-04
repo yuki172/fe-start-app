@@ -33,21 +33,3 @@ class SimpleMockFeed {
 
 test = new SimpleMockFeed({ taskNumber: 4, totalTasks: 5 });
 console.log("in data", test);
-
-// class Point {
-//   constructor({ x, y }) {
-//     console.log("constructor");
-//     this.x = x;
-//     this.y = y;
-//   }
-
-//   static displayName = "Point";
-//   static distance(a, b) {
-//     const dx = a.x - b.x;
-//     const dy = a.y - b.y;
-
-//     return Math.hypot(dx, dy);
-//   }
-// }
-
-// const p1 = new Point({ x: 5, y: 5 });
