@@ -4,7 +4,7 @@ const IMAGE_URLS = [
   "https://images.unsplash.com/photo-1592093397571-36323190f372?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
-const getTaskIDFromIndex = ({ index }) => {
+export const getTaskIDFromIndex = ({ index }) => {
   return index;
 };
 
@@ -22,7 +22,7 @@ const getSubmittedUserFromIndex = ({ index }) => {
   return `user-${index % TOTAL_USERS}`;
 };
 
-const getTaskFromIndex = ({ taskIndex, feedID }) => {
+export const getTaskFromIndex = ({ taskIndex, feedID }) => {
   return {
     feed_id: feedID,
     task_id: getTaskIDFromIndex({ index: taskIndex }),
@@ -31,9 +31,4 @@ const getTaskFromIndex = ({ taskIndex, feedID }) => {
     media_url: getImageUrlFromIndex({ index: taskIndex }),
     media_type: "image",
   };
-};
-
-module.exports = {
-  getTaskFromIndex,
-  getTaskIDFromIndex,
 };

@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { v4: uuidv4 } = require("uuid");
-const { getTaskFromIndex, getTaskIDFromIndex } = require("./data");
+const { getTaskFromIndex, getTaskIDFromIndex } = require("./src/mock_data");
 
 const Pool = require("pg").Pool;
 
