@@ -31,12 +31,11 @@ router.get("/feeds/:feed_id/nextTask", async (req, res, next) => {
     const row = result.rows[0];
     const { tasks_remaining: tasksRemaining, total_tasks: totalTasks } = row;
     if (tasksRemaining === 0) {
-      res.json({ tasks: [], tasks_remaining: tasksRemaining });
+      res.json({ tasks: [] });
     } else {
       const taskIndex = totalTasks - tasksRemaining;
       res.json({
         tasks: [getTaskFromIndex({ taskIndex, feedID })],
-        tasks_remaining: tasksRemaining,
       });
     }
   } catch (error) {
