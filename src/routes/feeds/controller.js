@@ -17,7 +17,7 @@ router.post("/feeds/create", async (req, res, next) => {
 
   try {
     await createFeed({ feedID, taskCount, candidateName });
-    res.status(201).send(`Feed added with ID: ${feedID}`);
+    res.status(201).json({ message: "Feed added", feed_id: feedID });
   } catch (error) {
     next(error);
   }
@@ -51,12 +51,9 @@ const getIsValidJudgmentID = ({ judgmentID }) => {
   }
 };
 
-router.post("/feeds/submitJudgment", async (req, res, next) => {
-  const {
-    feed_id: feedID,
-    task_id: taskID,
-    judgment_id: judgmentID,
-  } = req.body;
+router.post("/feeds/:feed_id/submitJudgment", async (req, res, next) => {
+  const { feed_id: feedID } = req.params;
+  const { task_id: taskID, judgment_id: judgmentID } = req.body;
 
   if (!getIsValidJudgmentID({ judgmentID })) {
     res.status(400).json({ error: "The judgment_id is invalid." });
