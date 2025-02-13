@@ -21,7 +21,9 @@ app.get("/", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  if (err && err.errorCode) {
+  if (err.message) {
+    res.status(400).json({ error: err.message });
+  } else if (err && err.errorCode) {
     res.status(err.errorCode).json(err.message);
   } else if (err) {
     res.status(500).json(err.message);

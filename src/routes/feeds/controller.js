@@ -7,6 +7,7 @@ import {
 } from "./service.js";
 import { getTaskIDFromIndex, getTaskFromIndex } from "../../mock_data.js";
 import { v4 as uuidv4 } from "uuid";
+import { getIsValidJudgmentID } from "./utils.js";
 
 const router = Router();
 
@@ -28,8 +29,11 @@ router.get("/feeds/:feed_id/nextTask", async (req, res, next) => {
 
   try {
     const result = await getNextTask({ feedID });
-    const row = result.rows[0];
-    const { tasks_remaining: tasksRemaining, total_tasks: totalTasks } = row;
+    const feed = result.rows[0];
+    if (feed == null) {
+      throw { message: "Feed not found" };
+    }
+    const { tasks_remaining: tasksRemaining, total_tasks: totalTasks } = feed;
     if (tasksRemaining === 0) {
       res.json({ tasks: [] });
     } else {
@@ -43,14 +47,6 @@ router.get("/feeds/:feed_id/nextTask", async (req, res, next) => {
   }
 });
 
-const getIsValidJudgmentID = ({ judgmentID }) => {
-  if (judgmentID === "allow" || judgmentID === "deny") {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 router.post("/feeds/:feed_id/submitJudgment", async (req, res, next) => {
   const { feed_id: feedID } = req.params;
   const { task_id: taskID, judgment_id: judgmentID } = req.body;
@@ -62,20 +58,29 @@ router.post("/feeds/:feed_id/submitJudgment", async (req, res, next) => {
   try {
     const feedQueryResult = await getFeed({ feedID });
     const feed = feedQueryResult.rows[0];
+    if (feed == null) {
+      throw { message: "Feed not found" };
+    }
     const { tasks_remaining: tasksRemaining, total_tasks: totalTasks } = feed;
 
     const currentTaskIndex = totalTasks - tasksRemaining;
     const currentTaskID = getTaskIDFromIndex({ index: currentTaskIndex });
-    if (currentTaskID != taskID) {
+    if (currentTaskID !== taskID) {
       res.status(400).send({ error: "Task does not exist in the feed." });
     } else {
+      const updatedTasksRemaining = tasksRemaining - 1;
       await updateFeedTaskCounts({
-        tasksRemaining: tasksRemaining - 1,
+        tasksRemaining: updatedTasksRemaining,
         feedID,
       });
-      res.json({ message: "Task has been reviewed." });
+      res.json({
+        message: "Task has been reviewed.",
+        tasks_remaining: updatedTasksRemaining,
+      });
     }
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default router;
