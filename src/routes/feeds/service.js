@@ -9,10 +9,9 @@ export const createFeed = async ({ feedID, taskCount, candidateName }) => {
 };
 
 export const getFeed = async ({ feedID }) => {
-  const result = await pool.query(
-    "SELECT tasks_remaining, total_tasks FROM feeds WHERE feed_id = $1",
-    [feedID]
-  );
+  const result = await pool.query("SELECT * FROM feeds WHERE feed_id = $1", [
+    feedID,
+  ]);
   return result;
 };
 
@@ -28,6 +27,14 @@ export const getNextTask = async ({ feedID }) => {
   const result = await pool.query(
     "SELECT tasks_remaining, total_tasks FROM feeds WHERE feed_id = $1",
     [feedID]
+  );
+  return result;
+};
+
+export const updateTaskExpireTime = async ({ feedID, expireTimeStr }) => {
+  const result = await pool.query(
+    "UPDATE feeds SET expire_time = $1 WHERE feed_id = $2",
+    [expireTimeStr, feedID]
   );
   return result;
 };

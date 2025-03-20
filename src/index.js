@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import routes from "./routes/routes.js";
+import { pool } from "./postgres/client.js";
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(
 );
 app.use(routes);
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   res.json({ status: "API is running on /" });
 });
 
