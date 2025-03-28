@@ -5,7 +5,7 @@ const IMAGE_URLS = [
 ];
 
 export const getTaskIDFromIndex = ({ index }) => {
-  return index;
+  return `task-${index}`;
 };
 
 const getImageUrlFromIndex = ({ index }) => {
